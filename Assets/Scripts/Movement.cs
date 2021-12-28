@@ -8,6 +8,7 @@ public class Movement : MonoBehaviour
     AudioSource rocketSound;
     [SerializeField] float mainThrust = 1000f;
     [SerializeField] float rotationSpeed = 50f;
+    [SerializeField] AudioClip thruster;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,7 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space)){
             if (!rocketSound.isPlaying)
             {
-                rocketSound.Play();
+                rocketSound.PlayOneShot(thruster);
             }
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);   
         }

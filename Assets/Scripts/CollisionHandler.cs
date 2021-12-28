@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+    [SerializeField] AudioClip crashSound;
+    [SerializeField] AudioClip finishLevelSound;
+    [SerializeField] float secondsBetweenScenes = 2f;
     void OnCollisionEnter(Collision other) 
     {
         switch (other.gameObject.tag)
@@ -11,15 +14,27 @@ public class CollisionHandler : MonoBehaviour
                 Debug.Log("This thing is freindly");
                 break;
             case "Finish":
-                LoadNextLevel();
+                FinishLevel();
                 break;
             default:
-                ReloadLevel();
+                CrashSequence();
                 break;
         }
 
     }
 
+    void FinishLevel()
+    {
+        GetComponent<Movement>().enabled = false;  // Disables rocket movement after crashing
+        GetComponent<AudioSource>().PlayOneShot(finishLevelSound);
+        Invoke("LoadNextLevel", secondsBetweenScenes);
+    }
+    void CrashSequence()
+    {
+        GetComponent<Movement>().enabled = false;  // Disables rocket movement after crashing
+        GetComponent<AudioSource>().PlayOneShot(crashSound);
+        Invoke("ReloadLevel", secondsBetweenScenes);
+    }
     void ReloadLevel()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -31,7 +46,7 @@ public class CollisionHandler : MonoBehaviour
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
-        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)  //Checks to see if player is on final level.  If true, it will start the game at the first scene
         {
             nextSceneIndex = 0;
         } 
