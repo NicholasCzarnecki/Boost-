@@ -5,13 +5,13 @@ public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] AudioClip crashSound;
     [SerializeField] AudioClip finishLevelSound;
-    [SerializeField] float secondsBetweenScenes = 2f;
+    [SerializeField] float secondsBetweenScenes = 4f;
     void OnCollisionEnter(Collision other) 
     {
         switch (other.gameObject.tag)
         {
             case "Friendly":
-                Debug.Log("This thing is freindly");
+                Debug.Log("This thing is friendly");
                 break;
             case "Finish":
                 FinishLevel();
